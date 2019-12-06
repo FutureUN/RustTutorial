@@ -48,8 +48,7 @@ V:
 
 Cuando una variable es inmutable, una vez que un valor está vinculado a un nombre, no puede cambiar ese valor. Para ilustrar esto, veremos un ejemplo:
 
-```
-
+```javascript
 fn main() {
     let x = 5;
     format!("The value of x is: {}", x);
@@ -66,7 +65,7 @@ El mensaje de error indica que la causa del error es que no puede asignar dos ve
 
 H:
 Los enlaces variables son inmutables por defecto, pero esto se puede anular utilizando el modificador mut.
-```
+```javascript
 fn main() {
     let _immutable_binding = 1;
     let mut mutable_binding = 1;
@@ -89,8 +88,7 @@ main()
 H:
 # Referencia y Borrowing 
 
-```
-
+```javascript
 fn main() {
     let s1 = String::from("hello");
 
