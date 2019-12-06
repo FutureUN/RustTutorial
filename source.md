@@ -44,9 +44,9 @@ Variables y mutabilidad
 Por defecto las variables en Rust son **inmutables.** Este es uno de los muchos codazos que brinda Rust para escribir código en una manera que aproveche la seguridad y facilidad de hacer concurrencia que ofrece Rust.
 
 Cuando una variable es inmutable, una vez que un valor está vinculado a un nombre, no puede cambiar ese valor. Para ilustrar esto, veremos un ejemplo:
-V:
 
-```rust
+
+```javascript
 
 fn main() {
     let x = 5;
