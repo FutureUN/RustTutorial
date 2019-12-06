@@ -43,8 +43,10 @@ V:
 Variables y mutabilidad
 Por defecto las variables en Rust son **inmutables.** Este es uno de los muchos codazos que brinda Rust para escribir código en una manera que aproveche la seguridad y facilidad de hacer concurrencia que ofrece Rust.
 
-Cuando una variable es inmutable, una vez que un valor está vinculado a un nombre, no puede cambiar ese valor. Para ilustrar esto, veremos un ejemplo:
 
+V:
+
+Cuando una variable es inmutable, una vez que un valor está vinculado a un nombre, no puede cambiar ese valor. Para ilustrar esto, veremos un ejemplo:
 
 ```javascript
 
@@ -57,6 +59,14 @@ fn main() {
 main()
 
 ```
+
+> let x = 5;
+        ^ first assignment to `x`
+    x = 6;
+    ^^^^^ cannot assign twice to immutable variable
+cannot assign twice to immutable variable `x`
+
+El mensaje de error indica que la causa del error es que no puede asignar dos veces a la variable inmutable x, porque trató de asignar un segundo valor a la variable inmutable x.
 
 H:
 # *The way we did it *:
