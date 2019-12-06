@@ -88,7 +88,7 @@ main()
 H:
 # Referencia y Borrowing 
 
-```javascript
+```python
 fn main() {
     let s1 = String::from("hello");
 
@@ -104,17 +104,24 @@ fn calculate_length(s: &String) -> usize {
 
 ```
 
-V:
-### Galaga 
-<!-- .slide: data-background="#7E2121"  -->
-  >A version of the clasic game. Is an arcade video game developed by Tomohiro Nishikado and released in 1978 <!-- .element: class="fragment" data-fragment-index="1"-->
-  
-More information on [Wikipedia](https://en.wikipedia.org/wiki/Space_Invaders) <!-- .element: class="fragment" data-fragment-index="1"-->
+Los ampersands son referencias y permiten referirse a algún valor sin tomar ownership de él.
 
 V:
-#### <font color="red">Galaga Running! </font>
-<!-- .slide: data-background="#000000"  -->
-<iframe src="sketches/Galaga.html" width="700" height="700" align="center"> 
+Qué pasa si traramos de modificar algo que pedimos prestado?
+
+```js
+fn main() {
+    let s = String::from("hello");
+
+    change(&s);
+}
+
+fn change(some_string: &String) {
+    some_string.push_str(", world");
+}
+
+main()
+```
 
 
 V: 
