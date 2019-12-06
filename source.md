@@ -60,33 +60,51 @@ main()
 
 ```
 
-> let x = 5;
-        ^ first assignment to `x`
-    x = 6;
-    ^^^^^ cannot assign twice to immutable variable
-cannot assign twice to immutable variable `x`
+Error:  cannot assign twice to immutable variable
 
 El mensaje de error indica que la causa del error es que no puede asignar dos veces a la variable inmutable x, porque trató de asignar un segundo valor a la variable inmutable x.
 
 H:
-# *The way we did it *:
-Each one of the games is a class, and Games, is the super class.  
-<img src="UML.png"> </img>
+Los enlaces variables son inmutables por defecto, pero esto se puede anular utilizando el modificador mut.
+```
+fn main() {
+    let _immutable_binding = 1;
+    let mut mutable_binding = 1;
 
+    println!("Before mutation: {}", mutable_binding);
+
+    // Ok
+    mutable_binding += 1;
+
+    println!("After mutation: {}", mutable_binding);
+
+    // Error!
+    //_immutable_binding += 1;
+    // FIXME ^ Comment out this line
+}
+main()
+```
 
 
 H:
-# *The Games*
+# Referencia y Borrowing 
 
-* Galaga
+```
 
-* Clouds
+fn main() {
+    let s1 = String::from("hello");
 
-* Sticks
+    let len = calculate_length(&s1);
 
-* Colors
+    println!("The length of '{}' is {}.", s1, len);
+}
 
-* Bounce
+fn calculate_length(s: &String) -> usize {
+    s.len()
+} // Here, s goes out of scope. But because it does not have ownership of what
+  // it refers to, nothing happens.
+
+```
 
 V:
 ### Galaga 
