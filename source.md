@@ -41,10 +41,10 @@ H:
 
 ## Recursos para aprender Rust:
 
-* [Link Repositorio](https://github.com/FutureUN/RustTutorial/
-* [Link Notebook](http://nbviewer.jupyter.org/url/ferestrepoca.github.io/paradigmas-de-programacion/progconcurrente/tutoriales/Rust_201903/tutorial.ipynb)
+* [Link Repositorio](https://github.com/FutureUN/RustTutorial/)
+* [Link Notebook Tutorial](https://mybinder.org/v2/gh/FutureUN/RustTutorial/master?filepath=tutorial.ipynb)
 * [Presentación](https://futureun.github.io/RustTutorial/#/themes)
-* [Taller Rust](https://docs.google.com/document/d/129_IjcLVAvnH10cSYi1EZsEurrqqiDX7-dGC3tGyP-8/edit?usp=sharing)
+* [Taller Rust](https://mybinder.org/v2/gh/FutureUN/RustTutorial/master?filepath=Taller.ipynb)
 * [Documentación Oficial](https://doc.rust-lang.org/book/)
 
 H:
