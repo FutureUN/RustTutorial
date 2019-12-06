@@ -27,15 +27,28 @@ H:
 # Index
 
 <!-- .slide: data-background="#7E2121" --> 
- 1. The main idea  <!-- .element: class="fragment" data-fragment-index="1"-->
- 1. The way we did it <!-- .element: class="fragment" data-fragment-index="2"-->
- 1. The Games <!-- .element: class="fragment" data-fragment-index="3"-->
- 1. References <!-- .element: class="fragment" data-fragment-index="4"-->
+ 1. Reseña  <!-- .element: class="fragment" data-fragment-index="1"-->
+ 1. Recursos Para Rust
+ 1. Conceptos de Rust <!-- .element: class="fragment" data-fragment-index="2"-->
+ 1. Ejemplos <!-- .element: class="fragment" data-fragment-index="3"-->
 H:
 
 ## Acerca de Rust 
   
-**Rust** es un lenguaje de programación de sistemas que corre increíblemente rápido, previene fallos de segmentación y garantiza seguridad en la concurrencia.
+**Rust** es un lenguaje de programación de sistemas de paradigmas múltiples centrado en la seguridad, especialmente la concurrencia segura.Rust es sintácticamente similar a C ++, pero está diseñado para proporcionar una mejor seguridad de la memoria mientras se mantiene un alto rendimiento.
+
+H: 
+
+## Recursos para aprender Rust:
+
+* [Link Repositorio](https://github.com/FutureUN/RustTutorial/
+* [Link Notebook](http://nbviewer.jupyter.org/url/ferestrepoca.github.io/paradigmas-de-programacion/progconcurrente/tutoriales/Rust_201903/tutorial.ipynb)
+* [Presentación](https://futureun.github.io/RustTutorial/#/themes)
+* [Taller Rust](https://docs.google.com/document/d/129_IjcLVAvnH10cSYi1EZsEurrqqiDX7-dGC3tGyP-8/edit?usp=sharing)
+* [Documentación Oficial](https://doc.rust-lang.org/book/)
+
+H:
+# Conceptos Básicos de Rust
 
 V:
 ## Variables y mutabilidad
@@ -83,9 +96,84 @@ fn main() {
 }
 main()
 ```
+V: 
+## Shadowing 
+Es la capacidad de rust para redelarar variables con el mismo nombre, veamoslo con un ejemplo.
+
+```js
+println!("Valor de str {}", str);
+:vars
+
+// cambiar el valor de una variable inmutable
+let str = "Valor de str Rust tutorial";
+println!("{}", str);
+:vars
+
+// cambiar el valor y el tipo de una variable inmutable
+
+let str = str.len();
+println!("Valor de str {}", str);
+:vars
+```
+
+V: 
+## Pertenencia o OwnerShip
+El concepto de ownership se refiere a la capacidad de rust para que solo una variable sea la encargada de administrar un espacio de memoria del heap del proceso. 
+
+```js
+let mut s = String::from("hello");
+//let mut s = "hello";
+s.push_str(", world!"); // push_str() concatena el literal al final
+// si no se declara de usando String::from no se puede concanenar 
+println!("{}", s); 
+
+let str1 = String::from("una cadenita");
+
+let str2 = str1;
 
 
-H:
+// al tratar de imprimir str1 sale un error debido a que la pertenencia fue otorgada a str2
+println!("{} ", str2)
+
+// cambiar str1 por str2 ^
+```
+
+V: 
+En el main nos damos cuenta que el valor retornado por gives_ownership se almacena en s1 y pasa a ser parte del alcance del main. Luego, genera una cadena s2. s3 sera el valor de retorno de la funcion takes_and_gives_back (se ingresa s2 como parametro)
+
+V:
+```
+    let s1 = gives_ownership();         // gives_ownership moves its return
+                                        // value into s1
+
+    let s2 = String::from("hello");     // s2 comes into scope
+
+    let s3 = takes_and_gives_back(s2);  // s2 is moved into
+                                        // takes_and_gives_back, which also
+                                        // moves its return value into s3
+} // Here, s3 goes out of scope and is dropped. s2 goes out of scope but was
+  // moved, so nothing happens. s1 goes out of scope and is dropped.
+
+fn gives_ownership() -> String {             // gives_ownership will move its
+                                             // return value into the function
+                                             // that calls it
+
+    let some_string = String::from("hello"); // some_string comes into scope
+
+    some_string                              // some_string is returned and
+                                             // moves out to the calling
+                                             // function
+}
+
+// takes_and_gives_back will take a String and return one
+fn takes_and_gives_back(a_string: String) -> String { // a_string comes into
+                                                      // scope
+
+    a_string  // a_string is returned and moves out to the calling function
+}
+```
+
+V:
 # Referencia y Borrowing 
 
 ```python
@@ -122,70 +210,30 @@ fn change(some_string: &String) {
 
 main()
 ```
+V: 
+
+## Referencias Mutables
+
+Podemos corregir el error en el código del anterios con solo un pequeño ajuste:
+
+```
+fn main() {
+    let mut s = String::from("hello");
+
+    change(&mut s);
+}
+
+fn change(some_string: &mut String) {
+    some_string.push_str(", world");
+}
+
+main()
+```
+Primero, tuvimos que cambiar s para ser mut. Luego tuvimos que crear una referencia mutable con &mut s y aceptar una referencia mutable con some_string: & mut String.
 
 
 V: 
-### Clouds
-  > How far can you go?? The sky is the limit. With this game you will jump the higher you can. Just move te bus with the mouse to go up.
+## Closure
 
-The inspiration for this game was the experience as a gamer. <!-- .element: class="fragment" data-fragment-index="1"-->
+Una closure es una función anónima que puede ser guardada en una variable y por ende ser enviada como parametro en una función
 
-V:
-#### Transmi-Cloud Running... 
-<iframe src="sketches/Clouds.html" width="700" height="700" align="center"> 
-
-V:
-## Sticks 
-> This game was based on the Towers of Hanoi. This Puzzle is a mathematical game invented in 1883 by the French mathematician Edouard Lucas.
-
-
-The more you play, the more difficult it will become. 
-
-For more information, on [Wikipedia]( https://es.wikipedia.org/wiki/Torres_de_Hanói)
-
-V:
-#### Sticks Running... 
-<iframe src="sketches/Stick.html" width="700" height="700" align="center"> 
-
-V:
-## Colors
-<!-- .slide: data-background="#7E2121"  -->
-> This game consist of let the drop fall in the correct color cube. The drop will follow the mouse position.If you lose, just ckick any part of the canvas, a the game will start again.  
-V:
-#### Colors Running... 
-<iframe src="sketches/Colors.html" width="700" height="700" align="center"> 
-
-V:
-
-## Bounce
- >Version of the classic game of the red ball that have to pass thought different mazes to achive their goal. The ball obeys the up/down, right/left arrows of the keyboard. 
-
-V:
-#### Bounce Running... 
-<iframe src="sketches/Bounce.html" width="700" height="700" align="center"> 
-
-V:
-## Resume 
-| The games   | How to play them                 |
-| ------------|:--------------------------------:|
-| Galaga      | Up/down arrows and mouse press   |
-| Clouds      | With the position of the mouse   |  
-| Sticks      | Ckick the towers with the mouse  | 
-| Colors      | Follow the mouse position        |
-|Bounce       | Use your keyboard arrows to play |
-
-H:
-
-## Now Available for web:  
-
-<font color="black"> http:// futureun.github.io/FutureGame </font>
-<!-- .slide: data-background="#2E9AFE"  -->
-
-
-
-V:
-## References
-
-* [P5*JS](http://p5js.org/)
-* [P5.PLay](http://p5play.molleindustria.org/)
-* [Sounds Resources](http://www.sounds-resource.com/)
