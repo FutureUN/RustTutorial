@@ -48,7 +48,7 @@ V:
 
 Cuando una variable es inmutable, una vez que un valor está vinculado a un nombre, no puede cambiar ese valor. Para ilustrar esto, veremos un ejemplo:
 
-```javascript
+```
 
 fn main() {
     let x = 5;
