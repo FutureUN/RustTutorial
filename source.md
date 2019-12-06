@@ -18,7 +18,7 @@
 
 H:
 
-# ** FUTURE GAMES ** 
+# ** Lenguaje Rust ** 
 
 by  [Sebastian Chaves](https://github.com/adamantwharf) - [Laura Santos](https://github.com/lsfinite) - [Jimmy Pulido](https://github.com/jiapulidoar)
 I
@@ -33,26 +33,30 @@ H:
  1. References <!-- .element: class="fragment" data-fragment-index="4"-->
 H:
 
-# *The main idea*
-<!-- .slide: data-background="#005050" -->
-V:
- 
- ## What is it about?
+## Acerca de Rust 
   
-  >The idea of the game was creat a serie of mini games. Easy to play, easy to lose.This will become attractive to the player, so she/he will play it again and again.  
-  *Do you wanna play it?* <!-- .element: class="fragment" data-fragment-index="2"-->
-V:
-## Mini Games?:
-Yeap, we have made five of them, so you can play the one you consider more interesting. 
-<!-- .element: class="fragment" data-fragment-index="1"-->
+**Rust** es un lenguaje de programación de sistemas que corre increíblemente rápido, previene fallos de segmentación y garantiza seguridad en la concurrencia.
 
-Just see the squares...  <!-- .element: class="fragment" data-fragment-index="2"-->
-
-**And make your choice!!!** <!-- .element: class="fragment" data-fragment-index="3"-->
 V:
-## Objectives
-* Short Term = Have a lot of video games. And try to join them as one big game that is design for include the mini games.
-* Long Term = Make a complete game plataform. For pc ( Windows, Unix systems, GNU ), mobile devices ( android ) and of course the Web. 
+## Variables y mutabilidad
+
+Variables y mutabilidad
+Por defecto las variables en Rust son **inmutables.** Este es uno de los muchos codazos que brinda Rust para escribir código en una manera que aproveche la seguridad y facilidad de hacer concurrencia que ofrece Rust.
+
+Cuando una variable es inmutable, una vez que un valor está vinculado a un nombre, no puede cambiar ese valor. Para ilustrar esto, veremos un ejemplo:
+V:
+
+```rust
+
+fn main() {
+    let x = 5;
+    format!("The value of x is: {}", x);
+    x = 6;
+    eprintln!("The value of x is: {}", x);
+}
+main()
+
+```
 
 H:
 # *The way we did it *:
