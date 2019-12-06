@@ -50,6 +50,8 @@ H:
 H:
 # Conceptos Básicos de Rust
 
+Recomendamos ver el tutorial desde el  [Notebook](https://mybinder.org/v2/gh/FutureUN/RustTutorial/master?filepath=tutorial.ipynb)
+
 V:
 ## Variables y mutabilidad
 
@@ -76,7 +78,7 @@ Error:  cannot assign twice to immutable variable
 
 El mensaje de error indica que la causa del error es que no puede asignar dos veces a la variable inmutable x, porque trató de asignar un segundo valor a la variable inmutable x.
 
-H:
+V:
 Los enlaces variables son inmutables por defecto, pero esto se puede anular utilizando el modificador mut.
 ```javascript
 fn main() {
@@ -138,10 +140,9 @@ println!("{} ", str2)
 // cambiar str1 por str2 ^
 ```
 
-V: 
-En el main nos damos cuenta que el valor retornado por gives_ownership se almacena en s1 y pasa a ser parte del alcance del main. Luego, genera una cadena s2. s3 sera el valor de retorno de la funcion takes_and_gives_back (se ingresa s2 como parametro)
 
 V:
+En el main nos damos cuenta que el valor retornado por gives_ownership se almacena en s1 y pasa a ser parte del alcance del main. Luego, genera una cadena **s2. s3** sera el valor de retorno de la funcion takes_and_gives_back (se ingresa s2 como parametro)
 ```
     let s1 = gives_ownership();         // gives_ownership moves its return
                                         // value into s1
@@ -236,4 +237,193 @@ V:
 ## Closure
 
 Una closure es una función anónima que puede ser guardada en una variable y por ende ser enviada como parametro en una función
+
+```
+fn test() {
+    
+
+    let add_one = |num| {
+
+        // El valor que se quiere retornar se coloca sin punto y coma al final
+        num + 1
+    };
+    
+    let mut x = 5;
+    println!("llamado de add_one(x)  = {} ", add_one(x));
+    
+    fn clossure_como_argumento<F>(some_closure: F, x: i32) -> i32
+    where F: Fn(i32) -> i32 {
+
+        some_closure(x)
+    }
+    
+    let val = clossure_como_argumento(add_one, 32);
+    
+    println! ("resultado del closure llamado dentro de una funcion {}", val);
+}
+
+test();
+```
+V: 
+## HILOS (THREADS)
+Los hilos (Threads) se usan para correr partes de código independientes simultáneamente. Esto puede mejorar el rendimiento del programa al realizar múltiples tareas al mismo tiempo. 
+
+```
+use std::time::Duration;
+
+fn main() {
+    thread::spawn(|| {
+        for i in 1..10 {
+            println!("hi number {} from the spawned thread!", i);
+            thread::sleep(Duration::from_millis(1));
+        }
+    });
+
+    for i in 1..5 {
+        println!("hi number {} from the main thread!", i);
+        thread::sleep(Duration::from_millis(1));
+    }
+}
+
+main()
+```
+V:
+
+## CANALES (CHANNELS):
+Los canales son un concepto que provee Rust para facilitar la comunicación entre hilos al permitir el intercambio de mensajes. Un canal se compone de **transmitter** (el que transmite) and **receiver** (el que receiver). La idea es enviar datos desde una parte del código y revisar en otra parte la llegada de los mensajes.
+
+```
+use std::sync::mpsc;
+
+let (tx, rx) = mpsc::channel();
+
+thread::spawn(move || {
+    let val = String::from("hi");
+    tx.send(val).unwrap();
+    //println!("val is {}", val);
+});
+
+let received = rx.recv().unwrap();
+println!("Got: {}", received);
+```
+V: 
+
+## MUTEX (MUTUAL EXCLUSION / EXCLUSION MUTUA)
+
+Este recurso permite que únicamente un recurso tenga acceso a un mismo dato en un momento dado. Para tener acceso al dato, el recurso debe pedir permiso de acceso mediante el mutex’s lock (candado).
+
+```
+use std::sync::Mutex;
+
+
+    let m = Mutex::new(5);
+
+    {
+        let mut num = m.lock().unwrap();
+        *num = 6;
+    }
+
+    println!("m = {:?}", m);
+```
+
+H:  
+
+# Ejemplos 
+
+V: 
+
+## adivinar el numero
+
+```
+:dep rand = "0.3.14"
+use std::sync::{Mutex, Arc};
+use rand::Rng;
+use std::cmp::Ordering;
+
+
+let counter = Arc::new(Mutex::new(0i32));
+std::thread::spawn({
+    let counter = Arc::clone(&counter);
+    
+    let secret_number = rand::thread_rng().gen_range(1, 101);
+
+        println!("El numero secreto es: {}", secret_number);
+
+
+    move || {
+        *counter.lock().unwrap() = -1;
+        let mut last = -1;
+        loop {
+            
+            
+            let mut guess = *counter.lock().unwrap();
+            if guess != last {
+                println!("Numero ingresado: {}", guess);
+                match guess.cmp(&secret_number) {
+                    Ordering::Less => println!("Muy pequeño!"),
+                    Ordering::Greater => println!("Muy grande!"),
+                    Ordering::Equal => {
+                        println!("Ganaste!");
+                        break;
+                    },
+                }
+                last = guess;
+            }
+            
+        
+            std::thread::sleep(std::time::Duration::from_millis(100));
+        }
+        println!("Juego finalizado");
+}});
+```
+> *counter.lock().unwrap() = 32;
+> *counter.lock().unwrap();
+
+V:
+## Fractales 
+![output.png](output.png)
+V: 
+
+```
+fn main() -> Result<(), Box<dyn Error>> {
+    let (width, height) = (1920, 1080);
+    let mut img = ImageBuffer::new(width, height);
+    let iterations = 300;
+
+    let c = Complex::new(-0.8,  0.2);
+
+    let pool = ThreadPool::new(num_cpus::get());
+    let (tx, rx) = channel();
+
+    for y in 0..height {
+        let tx1 = tx.clone();
+        pool.execute(move || for x in 0..width/2 {
+                         let i = julia(c, x, y, width, height, iterations);
+                         let pixel = wavelength_to_rgb(380 + i * 400 / iterations);
+                         tx1.send((x, y, pixel)).expect("Could not send data!");
+                     });
+        let tx2 = tx.clone();
+        pool.execute(move || for x in width/2..width {
+                         let i = julia(c, x, y, width, height, iterations);
+                         let pixel = wavelength_to_rgb(380 + i * 400 / iterations);
+                         tx2.send((x, y, pixel)).expect("Could not send data!");
+                     });
+    }
+
+    for _ in 0..(width * height) {
+        let (x, y, pixel) = rx.recv()?;
+        img.put_pixel(x, y, pixel);
+    }
+    let _ = img.save("output.png")?;
+    Ok(())
+}
+
+main()
+```
+
+
+
+
+
+
 
